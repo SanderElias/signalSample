@@ -1,0 +1,29 @@
+label {
+  display: flex;
+  flex-wrap: unset;
+}
+
+label input[type=range] {
+  width: 20rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+tr {
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  padding: .25rem;
+  cursor: pointer;
+}
+
+tfoot > tr > td[colspan] >div {
+  display: flex;
+  gap: 1rem;
+}
+
+
