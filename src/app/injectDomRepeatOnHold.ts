@@ -4,11 +4,8 @@ import { Subject, fromEvent, repeat, switchMap, takeUntil, tap, timer } from 'rx
 
 /**
  * Helper that returns an observable that emits repeatedly while the user holds down the mouse button on the element.
- * @param elmSelector 
- * @param param1 
- * @returns 
  */
-export function injectDomRepeatOnHold(elmSelector: string, { delay } = { delay: 25 }) {
+export function injectDomRepeatOnHold(elmSelector: string, { delay } = { delay: 50 }) {
   const parent = inject(ElementRef).nativeElement as HTMLElement | undefined;
   const destroy$ = new Subject<void>();
   inject(DestroyRef).onDestroy(() => { destroy$.next(); destroy$.complete(); });

@@ -25,9 +25,14 @@ th {
   cursor: pointer;
 }
 
+
+
 tfoot > tr > td[colspan] >div {
   display: flex;
   gap: 1rem;
+  align-items: center;
+  height: 4rem;
+  padding: .5rem;
 }
 
 

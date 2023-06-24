@@ -12,7 +12,7 @@ export class SampleDataService {
   db = signal(new Map<string, Person>());
 
   constructor() {
-    this.addFakes(2500);
+    this.addFakes(500);
   }
 
   getById = (id?: string) => computed(() => id ? this.db().get(id) : undefined);
@@ -44,7 +44,7 @@ export class SampleDataService {
       const person = await genFake();
       this.db.mutate(() => this.db().set(person.id, person));
       // give the browser some time to work on the UI;
-      await new Promise(resolve => setTimeout(resolve, 1));
+      await new Promise(resolve => setTimeout(resolve, 0));
     }
   }
 }

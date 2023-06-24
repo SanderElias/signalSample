@@ -1,7 +1,7 @@
 <label>
   <span> Page Size ({{pageSize()}}):</span>
   <input type="range" name="size" [value]="pageSize()"
-    (input)="pageSize.set($any($event.target).valueAsNumber)" [max]="60">
+    (input)="pageSize.set($any($event.target).valueAsNumber)" min="5" [max]="250">
 </label>
 <table>
   <thead>
