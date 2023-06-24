@@ -21,12 +21,14 @@
       <td colspan="5">
         <div class="wrap">
 
-          <button (click)="navigate(-1)">Previous Page</button>
+          <button id="prev" title="hold down for automatic paging">Previous
+            Page</button>
           <input type="range" name="curpage" [value]="currentPage()"
-          (input)="goPage($any($event.target).valueAsNumber)"
-          [max]="pageCount()-1" id="">
+            (input)="goPage($any($event.target).valueAsNumber)"
+            [max]="pageCount()-1" id="">
           <span>({{currentPage()}} / {{pageCount()-1}})</span>
-          <button (click)="navigate(1)">Next Page</button>
+          <button id="next" title="hold down for automatic paging">Next
+            Page</button>
         </div>
       </td>
     </tr>

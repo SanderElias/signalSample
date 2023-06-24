@@ -1,9 +1,9 @@
-import { Component, WritableSignal, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, WritableSignal, computed, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { PersonProps, SampleDataService } from './sample-data.service';
-import { Person } from './utils';
 import { DataRowComponent } from './data-row/data-row.component';
+import { injectDomRepeatOnHold } from './injectDomRepeatOnHold';
+import { PersonProps, SampleDataService } from './sample-data.service';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +36,9 @@ export class AppComponent {
     });
   }, { allowSignalWrites: true });
 
+  prev = injectDomRepeatOnHold('#prev').subscribe(() => this.navigate(-1));
+  next = injectDomRepeatOnHold('#next').subscribe(() => this.navigate(1));
+
   navigate = (relative: number) => {
     const newPage = this.currentPage() + relative;
     if (newPage >= 0 && newPage < this.pageCount()) {
@@ -54,3 +57,6 @@ export class AppComponent {
   }
 
 }
+
+
+
