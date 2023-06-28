@@ -4,14 +4,15 @@ import { Subject, fromEvent, repeat, switchMap, takeUntil, tap, timer } from 'rx
 
 /**
  * Helper that returns an observable that emits repeatedly while the user holds down the mouse button on the element.
+ * will complete when the component using it is destroyed.
  */
 export function injectDomRepeatOnHold(elmSelector: string, { delay } = { delay: 50 }) {
   const parent = inject(ElementRef).nativeElement as HTMLElement | undefined;
   const destroy$ = new Subject<void>();
   inject(DestroyRef).onDestroy(() => { destroy$.next(); destroy$.complete(); });
 
-  return timer(1).pipe(
-    switchMap(() => {
+  return timer(10).pipe( // wait a bit, so that the component is fully initialized.
+    switchMap(() => { // switch to the actual functionality
       if (!parent) { console.warn('injectDomRepeatOnHold: could not find parent element'); }
       const elm = parent?.querySelector(elmSelector) as HTMLElement;
       if (!elm) { throw new Error(`injectDomRepeatOnHold: could not find element with selector ${elmSelector}`); }
@@ -21,9 +22,9 @@ export function injectDomRepeatOnHold(elmSelector: string, { delay } = { delay: 
         takeUntil(fromEvent<MouseEvent>(elm, 'mouseup')),
         takeUntil(fromEvent<MouseEvent>(elm, 'mouseleave')),
         tap(() => elm.style.cursor = ''),
-        repeat()
+        repeat() // restart so it works on next click too.
       );
     }),
-    takeUntil(destroy$)
+    takeUntil(destroy$), // make sure we stop when the component is destroyed.
   );
 }
