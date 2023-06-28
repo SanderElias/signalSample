@@ -1,8 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { Person } from './utils';
 
-const db = new Map<string, Person>();
-
 export type PersonProps = keyof Person;
 
 @Injectable({
