@@ -16,12 +16,25 @@ import { SampleDataService } from '../sample-data.service';
   styleUrls: ['./data-row.component.css']
 })
 export class DataRowComponent {
-  sample = inject(SampleDataService);
+  data = inject(SampleDataService);
+
+  /** mimic a input signal using a setter and a writableSignal */
   personId = signal<string | undefined>(undefined);
   @Input('personId') set _personId(id: string | undefined) {
     this.personId.set(id);
   }
 
-  person = computed(() => this.sample.getById(this.personId())());
+  /**
+   * use the personId signal to get the person.
+   * this wil update the UI when the personId changes.
+   * When the service returns an observable instead of a signal,
+   * this will be a bit more complicated.
+   */
+  person = computed(() => this.data.getById(this.personId())());
+
+  // something like this needs to be done when the service returns an observable:
+  // personFromObs = toSignal(toObservable(this.person).pipe(
+  //   switchMap(id => this.data.getById(id))
+  // ));
 
 }
