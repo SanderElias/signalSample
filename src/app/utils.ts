@@ -1,9 +1,6 @@
 import type { Address } from '@ngneat/falso';
 
-const seed =
-  'qwertyuiopasdfghjklzxcvbnm' +
-  'qwertyuiopasdfghjklzxcvbnm'.toUpperCase() +
-  '1234567890';
+const seed = 'qwertyuiopasdfghjklzxcvbnm' + 'qwertyuiopasdfghjklzxcvbnm'.toUpperCase() + '1234567890';
 const seedLength = seed.length;
 
 /**
@@ -26,7 +23,7 @@ export function randString(len: number): string {
 }
 
 export const genFake = async (id = createUniqueId()): Promise<Person> => {
-  const { randEmail, randFirstName, randLastName, randPhoneNumber, randParagraph, randAddress } = await import('@ngneat/falso')
+  const { randEmail, randFirstName, randLastName, randPhoneNumber, randParagraph, randAddress } = await import('@ngneat/falso');
   const firstName = randFirstName();
   const lastName = randLastName();
   const person = {
@@ -35,14 +32,22 @@ export const genFake = async (id = createUniqueId()): Promise<Person> => {
     firstName,
     lastName,
     adres: randAddress(),
-    telefoon: randPhoneNumber(),
-    email: randEmail(),
+    phone: randPhoneNumber(),
+    email: randEmail({ firstName, lastName }),
     tags: ['new testData'],
     remark: randParagraph(),
     test: new Set(''),
-  }
+  };
   return person;
-}
+};
+
+export const genFakes = (n: number) => {
+  const result: Promise<Person>[] = [];
+  for (let i = 0; i < n; i += 1) {
+    result.push(genFake());
+  }
+  return Promise.all(result);
+};
 
 export interface Person {
   id: string;
@@ -50,7 +55,7 @@ export interface Person {
   firstName: string;
   lastName: string;
   adres: Address;
-  telefoon: string;
+  phone: string;
   email: string;
   tags: string[];
   remark: string;

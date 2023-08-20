@@ -1,4 +1,8 @@
-
 td {
-  padding: .25rem;
+  padding: 0.25rem;
+  padding-left: 0.75rem;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

@@ -1,42 +1,65 @@
+<div class="topRow">
+  <label>
+    <span> Page Size ({{ pageSize() }}):</span>
+    <input
+      type="range"
+      name="size"
+      [value]="pageSize()"
+      (input)="pageSize.set($any($event.target).valueAsNumber)"
+      min="5"
+      [max]="250"
+    />
+    <button (click)="refresh()">Refresh</button>
+  </label>
+  <input
+    type="range"
+    name="count"
+    min="1"
+    max="100"
+    value="10"
+    [value]="addNumber()"
+    (input)="addNumber.set($any($event.target).valueAsNumber)"
+  />
+  <button (click)="addRows(addNumber())">Add {{ addNumber() * 500 }} new rows</button>
+</div>
 <label>
-  <span> Page Size ({{pageSize()}}):</span>
-  <input type="range" name="size" [value]="pageSize()"
-    (input)="pageSize.set($any($event.target).valueAsNumber)" min="5" [max]="250">
+  <span>Filter:</span>
+  <input type="text" name="size" [value]="filter()" (input)="filter.set($any($event.target).value); goPage(0)" />
 </label>
 <table>
   <thead>
     <tr>
-      <th (click)="sortProp.set('id')">id</th>
-      <th (click)="sortProp.set('screenName')">Screen name</th>
-      <th (click)="sortProp.set('firstName')">Firstname</th>
-      <th (click)="sortProp.set('lastName')">Lastname</th>
-      <th (click)="sortProp.set('email')">Email</th>
+      <th (click)="orderBy('id')">id</th>
+      <th (click)="orderBy('screenName')">Screen name</th>
+      <th (click)="orderBy('firstName')">Firstname</th>
+      <th (click)="orderBy('lastName')">Lastname</th>
+      <th (click)="orderBy('phone')">Phone</th>
+      <th (click)="orderBy('email')">Email</th>
+      <th (click)="orderBy('remark')">Remark</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody [highLight]="filter">
     <tr *ngFor="let id of page()" [personId]="id()"></tr>
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="5">
+      <td colspan="7">
         <div class="wrap">
-
-          <button id="prev" title="hold down for automatic paging">Previous
-            Page</button>
-          <input type="range" name="curpage" [value]="currentPage()"
+          <button id="prev" title="hold down for automatic paging">Previous Page</button>
+          <input
+            type="range"
+            name="curpage"
+            [value]="currentPage()"
             (input)="goPage($any($event.target).valueAsNumber)"
-            [max]="pageCount()-1" id="">
-          <span>({{currentPage()}} / {{pageCount()-1}})</span>
-          <button id="next" title="hold down for automatic paging">Next
-            Page</button>
+            [max]="pageCount() - 1"
+            id=""
+          />
+          <span>(page:{{ currentPage() }} of:{{ pageCount() - 1 }})</span>
+          <button id="next" title="hold down for automatic paging">Next Page</button>
+          <span>Available rows:{{ data.totalCount() }}</span>
+          <span *ngIf="filter()">In filter:{{ list().length }}</span>
         </div>
       </td>
     </tr>
   </tfoot>
 </table>
-<!--
-<pre><code>
-  {{ {
-    "page" : currentPage(),
-  }|json}}
-</code></pre> -->

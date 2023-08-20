@@ -1,19 +1,22 @@
-import { Component, Input, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input, computed, inject, signal } from '@angular/core';
+import { HighLightTDComponent } from '../high-light-td/high-light-td.component';
 import { SampleDataService } from '../sample-data.service';
 
 @Component({
   selector: 'tr [personId]',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HighLightTDComponent],
   template: `
-    <td>{{person()?.id ?? '--'}}</td>
-    <td>{{person()?.screenName ?? '--'}}</td>
-    <td>{{person()?.firstName ?? '--'}}</td>
-    <td>{{person()?.lastName ?? '--'}}</td>
-    <td>{{person()?.email ?? '--'}}</td>
+    <td>{{ person()?.id ?? '--' }}</td>
+    <td>{{ person()?.screenName ?? '--' }}</td>
+    <td>{{ person()?.firstName ?? '--' }}</td>
+    <td>{{ person()?.lastName ?? '--' }}</td>
+    <td>{{ person()?.phone ?? '--' }}</td>
+    <td>{{ person()?.email ?? '--' }}</td>
+    <td>{{ person()?.remark ?? '--' }}</td>
   `,
-  styleUrls: ['./data-row.component.css']
+  styleUrls: ['./data-row.component.css'],
 })
 export class DataRowComponent {
   data = inject(SampleDataService);
@@ -36,5 +39,4 @@ export class DataRowComponent {
   // personFromObs = toSignal(toObservable(this.person).pipe(
   //   switchMap(id => this.data.getById(id))
   // ));
-
 }

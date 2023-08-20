@@ -1,15 +1,23 @@
-label {
+label,
+.topRow {
   display: flex;
   flex-wrap: unset;
+  padding: 0.25rem;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-label input[type=range] {
+label input[type="range"] {
   width: 20rem;
+}
+label input[type="text"] {
+  margin-left: 0.5rem;
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
+  table-layout: fixed;
 }
 
 tr {
@@ -21,18 +29,32 @@ tr:nth-child(even) {
 }
 
 th {
-  padding: .25rem;
+  padding: 0.25rem;
   cursor: pointer;
+  text-align: left;
+  padding-left: 0.25rem;
+  width: 10rem;
 }
 
+th:nth-child(2) {
+  width: 12rem;
+}
 
+th:nth-child(5) {
+  width: 13rem;
+}
+th:nth-child(6) {
+  width: 23rem;
+}
 
-tfoot > tr > td[colspan] >div {
+th:last-child {
+  width: auto;
+}
+
+tfoot > tr > td[colspan] > div {
   display: flex;
   gap: 1rem;
   align-items: center;
   height: 4rem;
-  padding: .5rem;
+  padding: 0.5rem;
 }
-
-
