@@ -1,5 +1,5 @@
 import { DestroyRef, ElementRef, inject } from '@angular/core';
-import { Observable, Subject, fromEvent, repeat, switchMap, takeUntil, tap, timer } from 'rxjs';
+import { Observable, Subject, filter, fromEvent, map, merge, repeat, switchMap, takeUntil, timer } from 'rxjs';
 
 /**
  * Helper that returns an observable that emits repeatedly while the user holds down the mouse button on the element.
@@ -24,14 +24,21 @@ export function injectDomRepeatOnHold(elmSelector: string, { delay } = { delay: 
       if (!elm) {
         throw new Error(`injectDomRepeatOnHold: could not find element with selector ${elmSelector}`);
       }
-      return fromEvent<MouseEvent>(elm, 'mousedown').pipe(
-        tap(() => (elm.style.cursor = 'progress')),
-        switchMap(() => timer(100, delay)),
-        takeUntil(fromEvent<MouseEvent>(elm, 'mouseup')),
-        takeUntil(fromEvent<MouseEvent>(elm, 'mouseleave')),
-        tap(() => (elm.style.cursor = '')),
+      const firstDelay = 400;
+      const mouseStart = fromEvent<MouseEvent>(elm, 'mousedown').pipe(map(() => Date.now()));
+      const mouseEnd = merge(fromEvent<MouseEvent>(elm, 'mouseup'), fromEvent<MouseEvent>(elm, 'mouseleave'));
+      const hold = mouseStart.pipe(
+        switchMap((startTime) => timer(0, delay).pipe(map(() => Date.now() - startTime))),
+        filter((delayTime) => delayTime >= firstDelay),
+        takeUntil(mouseEnd),
         repeat() // restart so it works on next click too.
       );
+      const click = mouseStart.pipe(
+        takeUntil(mouseEnd),
+        filter((startTime) => Date.now() - startTime < firstDelay),
+        repeat()
+      );
+      return merge(click, hold);
     }),
     takeUntil(destroy$) // make sure we stop when the component is destroyed.
   );
