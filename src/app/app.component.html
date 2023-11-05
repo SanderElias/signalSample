@@ -1,30 +1,20 @@
 <div class="topRow">
   <label>
     <span> Page Size ({{ pageSize() }}):</span>
-    <input
-      type="range"
-      name="size"
-      [value]="pageSize()"
-      (input)="pageSize.set($any($event.target).valueAsNumber)"
-      min="5"
-      [max]="250"
-    />
-    <button (click)="refresh()">Refresh</button>
+    <input type="range" name="size" [value]="pageSize()"
+      (input)="pageSize.set($any($event.target).valueAsNumber)" min="5"
+      [max]="250" />
   </label>
-  <input
-    type="range"
-    name="count"
-    min="1"
-    max="100"
-    value="10"
+  <input type="range" name="count" min="1" max="100" value="10"
     [value]="addNumber()"
-    (input)="addNumber.set($any($event.target).valueAsNumber)"
-  />
-  <button (click)="addRows(addNumber())">Add {{ addNumber() * 500 }} new rows</button>
+    (input)="addNumber.set($any($event.target).valueAsNumber)" />
+  <button (click)="addRows(addNumber())">Add {{ addNumber() * 1000 }} new
+    rows</button>
 </div>
 <label>
   <span>Filter:</span>
-  <input type="text" name="size" [value]="filter()" (input)="filter.set($any($event.target).value); goPage(0)" />
+  <input type="text" name="size" [value]="filter()"
+    (input)="filter.set($any($event.target).value); goPage(0)" />
 </label>
 <table>
   <thead>
@@ -39,23 +29,22 @@
     </tr>
   </thead>
   <tbody [highLight]="filter">
-    <tr *ngFor="let id of page()" [personId]="id()"></tr>
+    @for (id of page(); track $index) {
+      <tr [personId]="id()"></tr>
+    }
   </tbody>
   <tfoot>
     <tr>
       <td colspan="7">
         <div class="wrap">
-          <button id="prev" title="hold down for automatic paging">Previous Page</button>
-          <input
-            type="range"
-            name="curpage"
-            [value]="currentPage()"
+          <button id="prev" title="hold down for automatic paging">Previous
+            Page</button>
+          <input type="range" name="curpage" [value]="currentPage()"
             (input)="goPage($any($event.target).valueAsNumber)"
-            [max]="pageCount() - 1"
-            id=""
-          />
+            [max]="pageCount() - 1" id="" />
           <span>(page:{{ currentPage() }} of:{{ pageCount() - 1 }})</span>
-          <button id="next" title="hold down for automatic paging">Next Page</button>
+          <button id="next" title="hold down for automatic paging">Next
+            Page</button>
           <span>Available rows:{{ data.totalCount() }}</span>
           <span *ngIf="filter()">In filter:{{ list().length }}</span>
         </div>

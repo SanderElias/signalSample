@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, effect, signal } from '@angular/core';
 import { Person } from './utils';
 
 export type PersonProps = keyof Person;
@@ -7,26 +7,36 @@ export type PersonProps = keyof Person;
   providedIn: 'root',
 })
 export class SampleDataService {
-  db = signal(new Map<string, Person>());
+  #dbMap = new Map<string, Person>();
+  #internalCount = signal(0);
+  #db = () => {
+    /**
+     * I'm misusing a signal as a side-effect here to make sure that whatever uses the db
+     * gets triggered (inside an effect or computed) to update.
+     * this is needed to work around the lack off mutable support in the current signals implementation
+     */
+    this.#internalCount();
+    return this.#dbMap;
+  };
 
   constructor() {
-    this.addFakes(100);
+    this.addFakes(50);
   }
 
-  totalCount = computed(() => this.db().size);
+  totalCount = this.#internalCount.asReadonly();
 
-  getById = (id?: string) => computed(() => (id ? this.db().get(id) : undefined));
+  getById = (id?: string) => computed(() => (id ? this.#db().get(id) : undefined));
 
   getIdList = (sortProp?: PersonProps, factor = 1, filter = '') =>
     computed(() => {
       if (!sortProp && filter === '') {
-        return Array.from(this.db().keys());
+        return Array.from(this.#db().keys());
       }
       /**
        * note: this is expensive, but will work for lists up to ~100.000
        * In a real app, this should be taken care of server-side.
        */
-      let list = [...this.db().values()];
+      let list = [...this.#db().values()];
       if (filter !== '') {
         const fl = new RegExp(filter, 'gi');
         list = list.filter((row) => [...Object.values(row)].some((field) => fl.test(String(field))));
@@ -47,12 +57,13 @@ export class SampleDataService {
   async addFakes(count: number) {
     const { genFakes } = await import('./utils');
     for (let i = 0; i < count; i++) {
-      const persons = await genFakes(500);
-      this.db.mutate(() => {
-        persons.forEach((person) => this.db().set(person.id, person));
-      });
+      const persons = await genFakes(1000);
+      const db = this.#dbMap;
+      persons.forEach((person) => db.set(person.id, person));
+      this.#internalCount.set(db.size)
       // give the browser some time to work on the UI;
-      await new Promise((resolve) => setTimeout(resolve, Math.random() * 25 + 25));
+      // await new Promise((resolve) => setTimeout(resolve, Math.random() * 25 + 25));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
 }

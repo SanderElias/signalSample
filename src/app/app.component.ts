@@ -47,13 +47,6 @@ export class AppComponent {
     return page;
   });
 
-  /**
-   * debug aid.
-   * Will cause the DOM trashing by replacing all existing rows.
-   */
-  refresh() {
-    this.pageSize.mutate(() => undefined); //force page to be recreated
-  }
 
   addRows = (n: number) => this.data.addFakes(n);
 
