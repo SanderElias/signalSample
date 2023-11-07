@@ -21,6 +21,8 @@
     (input)="addNumber.set($any($event.target).valueAsNumber)"
   />
   <button (click)="addRows(addNumber())">Add {{ addNumber() * 500 }} new rows</button>
+  <button (click)="toggleSmart()">Using {{ useSmartPage() }} pages</button>
+  <button (click)="testRun()">Test run</button>
 </div>
 <label>
   <span>Filter:</span>
@@ -38,8 +40,11 @@
       <th (click)="orderBy('remark')">Remark</th>
     </tr>
   </thead>
-  <tbody [highLight]="filter">
+  <tbody [highLight]="filter" *ngIf="useSmartPage() === 'smart'">
     <tr *ngFor="let id of page()" [personId]="id()"></tr>
+  </tbody>
+  <tbody [highLight]="filter" *ngIf="useSmartPage() === 'regular'">
+    <tr *ngFor="let id of regularPage()" [personId]="id"></tr>
   </tbody>
   <tfoot>
     <tr>

@@ -1,0 +1,4 @@
+<h1>Test dispose</h1>
+<button (click)="show.set(!show())">{{ show() ? 'dispose' : 'show' }}</button>
+<a [routerLink]="''">test</a>
+<app-dispose-child *ngIf="show()"></app-dispose-child>

@@ -13,5 +13,6 @@
     "statusBarItem.remoteBackground": "#63ab25",
     "statusBarItem.remoteForeground": "#15202b"
   },
-  "peacock.color": "#63ab25"
+  "peacock.color": "#63ab25",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

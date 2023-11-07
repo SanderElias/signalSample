@@ -5,7 +5,7 @@ import { Observable, Subject, filter, fromEvent, map, merge, repeat, switchMap, 
  * Helper that returns an observable that emits repeatedly while the user holds down the mouse button on the element.
  * will complete when the component using it is destroyed.
  */
-export function injectDomRepeatOnHold(elmSelector: string, { delay } = { delay: 25 }): Observable<number> {
+export function injectDomRepeatOnHold(elmSelector: string, { delay } = { delay: 5 }): Observable<number> {
   const parent = inject(ElementRef).nativeElement as HTMLElement | undefined;
   const destroy$ = new Subject<void>();
   inject(DestroyRef).onDestroy(() => {
