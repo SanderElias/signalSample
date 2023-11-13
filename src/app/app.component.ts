@@ -17,13 +17,13 @@ export class AppComponent {
   /** injections */
   data = inject(SampleDataService);
   elm = inject(ElementRef).nativeElement as HTMLDivElement;
-
   addNumber = signal(50); // the number of additions used by the add button.
   pageSize = signal(20); // the number of rows to show per page.
   sortProp = signal<PersonProps | undefined>(undefined); // hold the property to sort on. undefined means natural order.
   order = signal<1 | -1>(1); // when sorting, this defines the sorting order
   filter = signal(''); // the filter to use, empty means none.
   currentPage = signal(0); // the current page to show.
+  trackToUse = signal<'index' | 'id'>('index');
   list = computed(() => {
     const prop = this.sortProp();
     const order = this.order();
@@ -33,43 +33,22 @@ export class AppComponent {
     return newList;
   }); // the complete list of ID's to use, sorted by the current sortProp and order.
   pageCount = computed(() => Math.ceil(this.list().length / this.pageSize())); // calculate the number of pages.
-  /**
-   * this creates a "page" which is a list of signals.
-   * As I'm using this in a ngFor, it will not create new rows when the list changes.
-   * the only time the rows are recreated is when the page-size changes.
-   * This prevents DOM trashing when paginating over a large set.
-   */
-  page = computed(() => {
-    const page = [] as WritableSignal<string | undefined>[];
-    for (let i = 0; i < this.pageSize(); i++) {
-      page.push(signal(undefined));
-    }
-    return page;
-  });
-
 
   addRows = (n: number) => this.data.addFakes(n);
 
-  /**
-   * This makes the thing work. On changes it updates the the signal rows in the page array.
-   * I would love a way do do this without an effect, but I can't find it.
-   */
-  fillPage = effect(
-    () => {
-      const first = this.currentPage() * this.pageSize(); // calculate the first item to show.
-      const list = this.list; // get the list of id's to show.
-      // const pageSize = this.pageSize();
-      // if (first > list.length) {
-      //   this.currentPage.set(Math.floor(list.length / pageSize));
-      // }
-      this.page().forEach((_, i) => {
-        // for every row in the page
-        // replace the id's to show.
-        this.page()[i].set(list()[first + i] ?? undefined);
-      });
-    },
-    { allowSignalWrites: true }
-  );
+  computedPage = computed(() => {
+    const pageSize = this.pageSize();
+    const list = this.list(); // get the list of id's to show
+    const currentPage = this.currentPage() * pageSize > list.length ? Math.floor(list.length / pageSize) : this.currentPage();
+    const first = currentPage * pageSize; // calculate the first item to show.
+    const result = [] as string[];
+
+    for (let i = 0; i < pageSize; i += 1) {
+      result.push(list[first + i]); // will push undefined in non-existing rows.
+    }
+    // console.log({ pageSize, currentPage, first, length: Math.floor(list.length / pageSize), result });
+    return result;
+  });
 
   // Below this line is the code for user "actions" like clicking buttons and such.
   // --------------------------------------------------------------------------------------------
@@ -110,5 +89,25 @@ export class AppComponent {
     if (page >= 0 && page < this.pageCount()) {
       this.currentPage.set(page);
     }
+  };
+
+  /**
+   * automated test run, so I can monitor performance impact
+   */
+  testPerf = async () => {
+    const testPages = 500;
+    const wait = (to = 10) => new Promise((r: Function) => setTimeout(r, to));
+    const run = async (type: 'id' | 'index') => {
+      this.trackToUse.set(type);
+      this.goPage(0);
+      await wait(100); //wait till "stable"
+      for (let i = 0; i < testPages; i += 1) {
+        this.currentPage.set(i)
+        await wait(10);
+      }
+    };
+    await run('index');
+    await wait(1000); // give some room to be able to see the diff in performance monitor
+    await run('id');
   };
 }
