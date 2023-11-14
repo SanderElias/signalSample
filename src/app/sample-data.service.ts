@@ -48,7 +48,7 @@ export class SampleDataService {
     const { genFakes } = await import('./utils');
     for (let i = 0; i < count; i++) {
       const persons = await genFakes(1000);
-      const db = this.#db()
+      const db = this.#db();
       persons.forEach((person) => db.set(person.id, person));
       this.#db.set(new Map()); // make signal dirty, so everything will update. (fix for missing `signal.mutate`)
       this.#db.set(db); // store original map back in ;-P

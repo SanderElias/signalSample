@@ -102,7 +102,7 @@ export class AppComponent {
       this.goPage(0);
       await wait(100); //wait till "stable"
       for (let i = 0; i < testPages; i += 1) {
-        this.currentPage.set(i)
+        this.currentPage.set(i);
         await wait(10);
       }
     };

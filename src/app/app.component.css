@@ -7,10 +7,10 @@ label,
   gap: 0.5rem;
 }
 
-label input[type="range"] {
+label input[type='range'] {
   width: 20rem;
 }
-label input[type="text"] {
+label input[type='text'] {
   margin-left: 0.5rem;
 }
 

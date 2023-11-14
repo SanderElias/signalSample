@@ -19,7 +19,7 @@
     (input)="addNumber.set($any($event.target).valueAsNumber)" />
   <button (click)="addRows(addNumber())">Add {{ addNumber() * 1000 }} new rows</button>
   <button (click)="trackToUse.set(trackToUse() === 'id' ? 'index' : 'id')">Using track by {{ trackToUse() }}</button>
-  <button (click)="testPerf()"> Test Run</button>
+  <button (click)="testPerf()">Test Run</button>
 </div>
 <label>
   <span>Filter:</span>
