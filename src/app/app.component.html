@@ -61,11 +61,11 @@
             (input)="goPage($any($event.target).valueAsNumber)"
             [max]="pageCount() - 1"
             id="" />
-          <span>(page:{{ currentPage() }} of:{{ pageCount() - 1 }})</span>
+          <span>(page:{{ currentPage() | number }} of:{{ pageCount() - 1 | number }})</span>
           <button id="next" title="hold down for automatic paging">Next Page</button>
-          <span>Available rows:{{ data.totalCount() }}</span>
+          <span>Available rows:{{ data.totalCount() | number }}</span>
           @if (filter()) {
-            <span>In filter:{{ list().length }}</span>
+            <span>In filter:{{ list().length | number }}</span>
           }
         </div>
       </td>

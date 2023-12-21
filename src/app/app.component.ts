@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, WritableSignal, computed, effect, inject, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { Component, ElementRef, computed, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DataRowComponent } from './data-row/data-row.component';
 import { HighLightBodyComponent } from './high-light-body/high-light-body.component';
@@ -9,7 +9,7 @@ import { PersonProps, SampleDataService } from './sample-data.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, DataRowComponent, HighLightBodyComponent],
+  imports: [ RouterOutlet, DataRowComponent, HighLightBodyComponent, DecimalPipe],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
