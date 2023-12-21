@@ -20,6 +20,8 @@ export class AppComponent {
        */
       console.warn(`[appComponent] NoopZone detected, run CDR.detectChanges every 15Ms`);
       setInterval(() => this.cdr.detectChanges(), 15); // cater for 60 fps.
+      // kick off the rist time, wait a bit to give the app some time to start up.
+      // setTimeout(() => this.cdr.detectChanges(), 100);
     }
   }
 }

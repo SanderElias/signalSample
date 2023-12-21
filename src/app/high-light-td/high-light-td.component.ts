@@ -1,5 +1,5 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, ElementRef, NgZone, ViewChild, afterRender, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, NgZone, ViewChild, afterRender, inject } from '@angular/core';
 import { HighLightBodyComponent } from '../high-light-body/high-light-body.component';
 
 @Component({
@@ -8,6 +8,7 @@ import { HighLightBodyComponent } from '../high-light-body/high-light-body.compo
   imports: [CommonModule],
   template: `<span #org><ng-content></ng-content></span>`,
   styleUrls: ['./high-light-td.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HighLightTDComponent {
   /** injections  */

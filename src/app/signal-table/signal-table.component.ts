@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DataRowComponent } from '../data-row/data-row.component';
 import { HighLightBodyComponent } from '../high-light-body/high-light-body.component';
@@ -12,11 +12,13 @@ import { PersonProps, SampleDataService } from '../sample-data.service';
   imports: [CommonModule, RouterOutlet, DataRowComponent, HighLightBodyComponent],
   templateUrl: './signal-table.component.html',
   styleUrls: ['./signal-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignalTableComponent {
   /** injections */
   data = inject(SampleDataService);
   elm = inject(ElementRef).nativeElement as HTMLDivElement;
+
   addNumber = signal(50); // the number of additions used by the add button.
   pageSize = signal(20); // the number of rows to show per page.
   sortProp = signal<PersonProps | undefined>(undefined); // hold the property to sort on. undefined means natural order.

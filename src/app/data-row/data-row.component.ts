@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, computed, inject, signal } from '@angular/core';
 import { HighLightTDComponent } from '../high-light-td/high-light-td.component';
 import { SampleDataService } from '../sample-data.service';
 
@@ -17,6 +17,7 @@ import { SampleDataService } from '../sample-data.service';
     <td>{{ person()?.remark ?? '--' }}</td>
   `,
   styleUrls: ['./data-row.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataRowComponent {
   data = inject(SampleDataService);
