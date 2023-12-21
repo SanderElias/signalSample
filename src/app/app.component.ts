@@ -54,8 +54,8 @@ export class AppComponent {
   // --------------------------------------------------------------------------------------------
 
   /** helpers so you can have buttons that repeat when you hold your mouse button down on them */
-  prev = injectDomRepeatOnHold('#prev').subscribe(() => this.navigate(-1));
-  next = injectDomRepeatOnHold('#next').subscribe(() => this.navigate(1));
+  prev = injectDomRepeatOnHold('#prev').sideEffect(() => this.navigate(-1));
+  next = injectDomRepeatOnHold('#next').sideEffect(() => this.navigate(1));
 
   /**
    * helper to skip relative to current page, currently only used by the prev/next buttons.
