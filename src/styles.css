@@ -1,7 +1,6 @@
 /* the props */
-@import "open-props/style";
+@import 'open-props/style';
 
 /* optional imports that use the props */
-@import "open-props/normalize/dark";
-@import "open-props/buttons/dark";
-
+@import 'open-props/normalize/dark';
+@import 'open-props/buttons/dark';

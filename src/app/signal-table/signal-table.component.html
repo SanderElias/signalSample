@@ -7,9 +7,7 @@
       [value]="pageSize()"
       (input)="pageSize.set($any($event.target).valueAsNumber)"
       min="5"
-      [max]="250"
-    />
-    <button (click)="refresh()">Refresh</button>
+      [max]="250" />
   </label>
   <input
     type="range"
@@ -18,11 +16,10 @@
     max="100"
     value="10"
     [value]="addNumber()"
-    (input)="addNumber.set($any($event.target).valueAsNumber)"
-  />
-  <button (click)="addRows(addNumber())">Add {{ addNumber() * 500 }} new rows</button>
-  <button (click)="toggleSmart()">Using {{ useSmartPage() }} pages</button>
-  <button (click)="testRun()">Test run</button>
+    (input)="addNumber.set($any($event.target).valueAsNumber)" />
+  <button (click)="addRows(addNumber())">Add {{ addNumber() * 1000 }} new rows</button>
+  <button (click)="trackToUse.set(trackToUse() === 'id' ? 'index' : 'id')">Using track by {{ trackToUse() }}</button>
+  <button (click)="testPerf()">Test Run</button>
 </div>
 <label>
   <span>Filter:</span>
@@ -33,18 +30,24 @@
     <tr>
       <th (click)="orderBy('id')">id</th>
       <th (click)="orderBy('screenName')">Screen name</th>
-      <th (click)="orderBy('firstName')">Firstname</th>
-      <th (click)="orderBy('lastName')">Lastname</th>
+      <th (click)="orderBy('firstName')">First name</th>
+      <th (click)="orderBy('lastName')">Last name</th>
       <th (click)="orderBy('phone')">Phone</th>
       <th (click)="orderBy('email')">Email</th>
       <th (click)="orderBy('remark')">Remark</th>
     </tr>
   </thead>
-  <tbody [highLight]="filter" *ngIf="useSmartPage() === 'smart'">
-    <tr *ngFor="let id of page()" [personId]="id()"></tr>
-  </tbody>
-  <tbody [highLight]="filter" *ngIf="useSmartPage() === 'regular'">
-    <tr *ngFor="let id of regularPage()" [personId]="id"></tr>
+  <tbody [highLight]="filter">
+    @if (trackToUse() === 'index') {
+      @for (id of computedPage(); track $index) {
+        <tr [personId]="id"></tr>
+      }
+    }
+    @if (trackToUse() === 'id') {
+      @for (id of computedPage(); track id) {
+        <tr [personId]="id"></tr>
+      }
+    }
   </tbody>
   <tfoot>
     <tr>
@@ -57,12 +60,13 @@
             [value]="currentPage()"
             (input)="goPage($any($event.target).valueAsNumber)"
             [max]="pageCount() - 1"
-            id=""
-          />
-          <span>(page:{{ currentPage() }} of:{{ pageCount() - 1 }})</span>
+            id="" />
+          <span>(page:{{ currentPage() | number }} of:{{ pageCount() - 1 | number }})</span>
           <button id="next" title="hold down for automatic paging">Next Page</button>
-          <span>Available rows:{{ data.totalCount() }}</span>
-          <span *ngIf="filter()">In filter:{{ list().length }}</span>
+          <span>Available rows:{{ data.totalCount() | number }}</span>
+          @if (filter()) {
+            <span>In filter:{{ list().length | number }}</span>
+          }
         </div>
       </td>
     </tr>

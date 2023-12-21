@@ -9,32 +9,37 @@
     "test": "ng test"
   },
   "private": true,
+  "browserslist": [
+    "maintained node versions",
+    ">5%"
+  ],
   "dependencies": {
-    "@angular/animations": "^16.2.1",
-    "@angular/common": "^16.2.1",
-    "@angular/compiler": "^16.2.1",
-    "@angular/core": "^16.2.1",
-    "@angular/forms": "^16.2.1",
-    "@angular/platform-browser": "^16.2.1",
-    "@angular/platform-browser-dynamic": "^16.2.1",
-    "@angular/router": "^16.2.1",
-    "@ngneat/falso": "^7.0.1",
-    "open-props": "^1.5.13",
+    "@angular/animations": "^17.0.7",
+    "@angular/common": "^17.0.7",
+    "@angular/compiler": "^17.0.7",
+    "@angular/core": "^17.0.7",
+    "@angular/forms": "^17.0.7",
+    "@angular/platform-browser": "^17.0.7",
+    "@angular/platform-browser-dynamic": "^17.0.7",
+    "@angular/router": "^17.0.7",
+    "@ngneat/falso": "^7.1.1",
+    "open-props": "^1.6.16",
+    "prettier": "^3.1.1",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
-    "zone.js": "~0.13.1"
+    "zone.js": "~0.14.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.2.0",
-    "@angular/cli": "~16.2.0",
-    "@angular/compiler-cli": "^16.2.1",
-    "@types/jasmine": "~4.3.5",
-    "jasmine-core": "~5.1.0",
+    "@angular-devkit/build-angular": "^17.0.7",
+    "@angular/cli": "~17.0.7",
+    "@angular/compiler-cli": "^17.0.7",
+    "@types/jasmine": "~5.1.4",
+    "jasmine-core": "~5.1.1",
     "karma": "~6.4.2",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "5.2"
+    "typescript": "^5.2.2"
   }
 }

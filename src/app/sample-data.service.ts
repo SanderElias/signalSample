@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, effect, signal } from '@angular/core';
 import { Person } from './utils';
 
 export type PersonProps = keyof Person;
@@ -7,26 +7,26 @@ export type PersonProps = keyof Person;
   providedIn: 'root',
 })
 export class SampleDataService {
-  db = signal(new Map<string, Person>());
+  #db = signal(new Map<string, Person>());
 
   constructor() {
-    this.addFakes(100);
+    this.addFakes(15);
   }
 
-  totalCount = computed(() => this.db().size);
+  totalCount = computed(() => this.#db().size);
 
-  getById = (id?: string) => computed(() => (id ? this.db().get(id) : undefined));
+  getById = (id?: string) => computed(() => (id ? this.#db().get(id) : undefined));
 
   getIdList = (sortProp?: PersonProps, factor = 1, filter = '') =>
     computed(() => {
       if (!sortProp && filter === '') {
-        return Array.from(this.db().keys());
+        return Array.from(this.#db().keys());
       }
       /**
        * note: this is expensive, but will work for lists up to ~100.000
        * In a real app, this should be taken care of server-side.
        */
-      let list = [...this.db().values()];
+      let list = [...this.#db().values()];
       if (filter !== '') {
         const fl = new RegExp(filter, 'gi');
         list = list.filter((row) => [...Object.values(row)].some((field) => fl.test(String(field))));
@@ -47,10 +47,11 @@ export class SampleDataService {
   async addFakes(count: number) {
     const { genFakes } = await import('./utils');
     for (let i = 0; i < count; i++) {
-      const persons = await genFakes(500);
-      this.db.mutate(() => {
-        persons.forEach((person) => this.db().set(person.id, person));
-      });
+      const persons = await genFakes(1000);
+      const db = this.#db();
+      persons.forEach((person) => db.set(person.id, person));
+      this.#db.set(new Map()); // make signal dirty, so everything will update. (fix for missing `signal.mutate`)
+      this.#db.set(db); // store original map back in ;-P
       // give the browser some time to work on the UI;
       await new Promise((resolve) => setTimeout(resolve, Math.random() * 25 + 25));
     }
