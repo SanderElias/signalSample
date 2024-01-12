@@ -11,8 +11,10 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   cdr = inject(ChangeDetectorRef);
   zone = inject(NgZone);
+  noZone = this.zone instanceof ɵNoopNgZone;
+
   constructor() {
-    if (this.zone instanceof ɵNoopNgZone) {
+    if (this.noZone) {
       /**
        * This is a very crude way to get the app going.
        * As long as zoneLess isn't fully driven by signals,
