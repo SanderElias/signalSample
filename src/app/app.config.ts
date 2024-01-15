@@ -8,6 +8,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     /** adding zones, or not. */
-    { provide: NgZone, useClass: ɵNoopNgZone },
+    { provide: NgZone, useClass: ɵNoopNgZone }
   ],
 };

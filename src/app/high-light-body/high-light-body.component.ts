@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Signal, WritableSignal, effect, input } from '@angular/core';
 
 @Component({
   selector: 'tbody[highLight]',
@@ -7,8 +7,8 @@ import { ChangeDetectionStrategy, Component, Input, Signal } from '@angular/core
   imports: [CommonModule],
   template: `<ng-content></ng-content>`,
   styleUrls: ['./high-light-body.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HighLightBodyComponent {
-  @Input({ required: true }) highLight!: Signal<string>;
+  highLight = input<string>();
 }

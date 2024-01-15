@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, computed, inject, input, signal } from '@angular/core';
 import { HighLightTDComponent } from '../high-light-td/high-light-td.component';
 import { SampleDataService } from '../sample-data.service';
 
@@ -22,11 +22,7 @@ import { SampleDataService } from '../sample-data.service';
 export class DataRowComponent {
   data = inject(SampleDataService);
 
-  /** mimic a input signal using a setter and a writableSignal */
-  personId = signal<string | undefined>(undefined);
-  @Input('personId') set _personId(id: string | undefined) {
-    this.personId.set(id);
-  }
+  personId = input<string>();
 
   /**
    * use the personId signal to get the person.

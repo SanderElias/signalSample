@@ -37,7 +37,7 @@
       <th (click)="orderBy('remark')">Remark</th>
     </tr>
   </thead>
-  <tbody [highLight]="filter">
+  <tbody [highLight]="filter()">
     @if (trackToUse() === 'index') {
       @for (id of computedPage(); track $index) {
         <tr [personId]="id"></tr>

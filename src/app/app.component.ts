@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone, inject, ɵNoopNgZone } from '@angular/core';
+import { ApplicationRef, ChangeDetectorRef, Component, NgZone, inject, ɵNoopNgZone } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { RouterOutlet } from '@angular/router';
   styles: [],
 })
 export class AppComponent {
-  cdr = inject(ChangeDetectorRef);
+  app = inject(ApplicationRef)
   zone = inject(NgZone);
   noZone = this.zone instanceof ɵNoopNgZone;
 
@@ -21,9 +21,7 @@ export class AppComponent {
        * we need something to tell Angular to update the view.
        */
       console.warn(`[appComponent] NoopZone detected, run CDR.detectChanges every 15Ms`);
-      setInterval(() => this.cdr.detectChanges(), 15); // cater for 60 fps.
-      // kick off the rist time, wait a bit to give the app some time to start up.
-      // setTimeout(() => this.cdr.detectChanges(), 100);
+      setInterval(() => this.app.tick(), 15); // cater for 60 fps.
     }
   }
 }
