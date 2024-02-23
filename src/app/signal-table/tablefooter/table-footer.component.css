@@ -1,0 +1,15 @@
+tr > td[colspan] > div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  height: 4rem;
+  padding: 0.5rem;
+}
+
+td, td:hover {
+  background-color: var(--surface-1);
+}
+
+tr {
+  border-bottom: 1px solid #ccc;
+}

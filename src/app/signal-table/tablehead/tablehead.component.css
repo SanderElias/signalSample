@@ -1,0 +1,37 @@
+:host {
+  user-select: none;
+}
+
+tr {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  cursor: pointer;
+  text-align: left;
+  padding-left: 0.25rem;
+  width: 10rem;
+  color: var(--text-1);
+  font-weight: 900;
+  background-color: var(--surface-1);
+}
+
+th.active {
+  background-color: var(--surface-3);
+}
+
+th:nth-child(2) {
+  width: 12rem;
+}
+
+th:nth-child(5) {
+  width: 13rem;
+}
+th:nth-child(6) {
+  width: 23rem;
+}
+
+th:last-child {
+  width: auto;
+}

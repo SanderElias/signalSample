@@ -1,0 +1,44 @@
+<label>
+  <span> Page Size ({{ pageSize() }}):</span>
+  <input
+    type="range"
+    name="size"
+    [value]="pageSize()"
+    (input)="pageSize.set($any($event.target).valueAsNumber)"
+    min="5"
+    [max]="250" />
+</label>
+<label>
+  <input
+    type="range"
+    name="count"
+    min="1"
+    max="100"
+    value="10"
+    [value]="addNumber()"
+    (input)="addNumber.set($any($event.target).valueAsNumber)" />
+</label>
+<label>
+  <input
+    type="checkbox"
+    name="slow"
+    [checked]="slowAdd()"
+    title="Slow down the addRows button by adding a 500ms delay."
+    (change)="slowAdd.set(!slowAdd())" />
+</label>
+
+<button
+  [disabled]="busy()"
+  (click)="addRows(addNumber())">
+  Add {{ addNumber() * 1000 }} new rows
+</button>
+<button (click)="trackToUse.set(trackToUse() === 'id' ? 'index' : 'id')">Using track by {{ trackToUse() }}</button>
+<button (click)="testPerf.next()">Test Run</button>
+<label>
+  <span>Filter:</span>
+  <input
+    type="text"
+    name="size"
+    [value]="filter()"
+    (input)="filter.set($any($event.target).value)" />
+</label>

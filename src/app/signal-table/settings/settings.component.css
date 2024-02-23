@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  flex-wrap: unset;
+  padding: 0.25rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+label {
+  display: flex;
+  flex-wrap: unset;
+  padding: 0.25rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+label input[type='range'] {
+  width: 20rem;
+}
+label input[type='text'] {
+  margin-left: 0.25rem;
+}
