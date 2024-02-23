@@ -1,5 +1,5 @@
 import { DestroyRef, ElementRef, inject } from '@angular/core';
-import { Subject, fromEvent, repeat, switchMap, takeUntil, tap, timer } from 'rxjs';
+import { Subject, fromEvent, map, mapTo, merge, race, repeat, switchMap, takeUntil, tap, timer } from 'rxjs';
 
 type SideEffect = (n: number) => void;
 
@@ -14,12 +14,10 @@ export function injectDomRepeatOnHold(
   elmSelector: string,
   delay = 25,
   sideEffect: SideEffect = (n: number) => undefined
-): { sideEffect: (fn: SideEffect) => SideEffect } {
+): { sideEffect: (fn: SideEffect) => void } {
   const parent = inject(ElementRef).nativeElement as HTMLElement | undefined;
-  const destroy$ = new Subject<void>();
   inject(DestroyRef).onDestroy(() => {
-    destroy$.next();
-    destroy$.complete();
+    subscription.unsubscribe(); // clean up the subscription when the component is destroyed.
   });
 
   /**
@@ -29,7 +27,7 @@ export function injectDomRepeatOnHold(
    * This is using observables internally, and takes care of unsubscribing when the component is destroyed.
    * The consumer of this doesn't need to know anything about that.
    */
-  timer(10)
+  const subscription = timer(10)
     .pipe(
       // wait a bit, so that the component is fully initialized.
       switchMap(() => {
@@ -41,20 +39,30 @@ export function injectDomRepeatOnHold(
         if (!elm) {
           throw new Error(`injectDomRepeatOnHold: could not find element with selector ${elmSelector}`);
         }
-        return fromEvent<MouseEvent>(elm, 'mousedown').pipe(
-          tap(() => (elm.style.cursor = 'progress')),
-          switchMap(() => timer(100, delay)),
-          takeUntil(fromEvent<MouseEvent>(elm, 'mouseup')),
-          takeUntil(fromEvent<MouseEvent>(elm, 'mouseleave')),
-          tap(() => (elm.style.cursor = '')),
+        return fromEvent<MouseEvent>(elm, 'mousedown').pipe( // start on mouse down
+          tap(() => (elm.style.cursor = 'progress')), // show the user that something is happening.
+          switchMap(() =>
+            timer(100, delay).pipe( // start a timer that will call the side-effect function repeatedly.
+              takeUntil(race(fromEvent<MouseEvent>(elm, 'mouseup'), fromEvent<MouseEvent>(elm, 'mouseleave'))), // stop when the mouse button is released.
+              tap({
+                next: (n) => sideEffect(n), // call the side-effect function.
+                complete: () => {
+                  /**
+                   * make sure the side-effect is called at least once when the user releases the mouse button.
+                   */
+                  sideEffect(1);
+                  elm.style.cursor = ''; // turn the cursor back to normal.
+                },
+              })
+            )
+          ),
           repeat() // restart so it works on next click too.
         );
       }),
-      tap((n) => sideEffect(n)), // trigger the side-effect
-      takeUntil(destroy$) // make sure we stop when the component is destroyed.
     )
-    .subscribe();
+    .subscribe(); // start listening for mouse down events.
 
+  // return a sideEffect registration function.
   return {
     sideEffect: (fn: SideEffect) => (sideEffect = fn),
   };

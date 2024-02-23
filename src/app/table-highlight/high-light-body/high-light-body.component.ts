@@ -6,7 +6,6 @@ import { ChangeDetectionStrategy, Component, Input, Signal, WritableSignal, effe
   standalone: true,
   imports: [CommonModule],
   template: `<ng-content></ng-content>`,
-  styleUrls: ['./high-light-body.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HighLightBodyComponent {

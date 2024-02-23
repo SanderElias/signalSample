@@ -10,7 +10,7 @@ export class SampleDataService {
   #db = signal(new Map<string, Person>());
 
   constructor() {
-    this.addFakes(15);
+    this.addFakes(25);
   }
 
   totalCount = computed(() => this.#db().size);
