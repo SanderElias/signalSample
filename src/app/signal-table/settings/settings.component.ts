@@ -28,5 +28,6 @@ export class SettingsComponent {
       await this.data.addFakes(1);
       await new Promise((resolve) => setTimeout(resolve, this.delay()));
     }
+    this.busy.set(false);
   };
 }

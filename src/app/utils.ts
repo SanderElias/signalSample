@@ -42,11 +42,7 @@ export const genFake = (id = createUniqueId()): Person => {
 };
 
 export const genFakes = (n: number) => {
-  const result: Person[] = [];
-  for (let i = 0; i < n; i += 1) {
-    result.push(genFake());
-  }
-  return result;
+  return Array.from({ length: n }, () => genFake());
 };
 
 export interface Person {

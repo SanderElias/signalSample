@@ -66,13 +66,16 @@ export class SignalTableComponent {
     const testPages = 500;
     const wait = (to = 10) => new Promise((r: Function) => setTimeout(r, to));
     const run = async (type: 'id' | 'index') => {
+      const start = performance.now();
       this.trackToUse.set(type);
       this.currentPage.set(0);
       await wait(100); //wait till "stable"
       for (let i = 0; i < testPages; i += 1) {
         this.currentPage.set(i);
-        await wait(10);
+        await wait(5);
       }
+      const end = performance.now();
+      console.log(`Test ${type} took ${end - start} ms`);
     };
     await run('index');
     await wait(1500); // give some room to be able to see the diff in performance monitor
