@@ -4,3 +4,17 @@
 /* optional imports that use the props */
 @import 'open-props/normalize';
 @import 'open-props/buttons';
+
+:root {
+  --brand: #6200ee;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --brand: #e30ae7;
+  }
+}
+
+form {
+  accent-color: var(--brand);
+}
+

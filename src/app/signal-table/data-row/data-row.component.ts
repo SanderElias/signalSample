@@ -21,9 +21,9 @@ import { HighLightTDComponent } from 'src/app/table-highlight/high-light-td/high
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataRowComponent {
-  getById = inject(SampleDataService).getById; // get the getById method from the service. 
+  getById = inject(SampleDataService).getById; // get the getById method from the service.
 
-  personId = input<string>();
+  personId = input.required<string>();
 
   /**
    * use the personId signal to get the person.

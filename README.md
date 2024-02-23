@@ -1,14 +1,10 @@
 # SignalSample
 
-This project is here to be able to talk about Signals and Signal inputs.
-In it's current state it is mimic'ing signal inputs in the data-row component. It uses a setter.
-But it clearly shows that an input is a value that will change over time. There is a conceptual clash here.
+This project is here to be able to talk about Signals and Signal inputs and models. Also its meant to serve as a taling piece round
+frontend-architecture and how to build a scalable and maintainable frontend.
 
-Also there are some bugs in here. Those are not intended, but illustrate the issue we talked about.
 
-1. refresh the page a couple times, you will see some parts are not updated.
-2. try clicking on the table headers to change the sorting. When you reclick the same one, it will not reverse?
-3. when data is still loading, and you paginate, the pagination stops being updated.
+
 
 ## Development server
 

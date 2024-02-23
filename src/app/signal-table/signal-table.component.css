@@ -1,8 +1,7 @@
 :host {
   display: block;
-  padding: 1rem;
+  padding: var(--size-4);
 }
-
 
 table {
   margin-top: var(--size-2);
@@ -11,12 +10,17 @@ table {
   table-layout: fixed;
 }
 
-tr {
-  border-bottom: 1px solid #ccc;
+tr:nth-child(even) {
+  background-color: var(--surface-1);
+}
+tr:nth-child(odd) {
+  background-color: var(--surface-0);
 }
 
-tr:nth-child(even) {
-  background-color: var(--surface-2);
+tr:has(td:hover) {
+  background-color: var(--surface-3);
+  font-style: italic;
+  font-weight: bolder;
 }
 
 button#prev:active,

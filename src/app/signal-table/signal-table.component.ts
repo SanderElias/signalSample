@@ -24,7 +24,14 @@ export class SignalTableComponent {
   filter = signal(''); // the filter to use, empty means none.
   currentPage = signal(0); // the current page to show.
   trackToUse = signal<'index' | 'id'>('index');
-  // the complete list of ID's to use, sorted by the current sortProp and order.
+
+  /**
+   * list is a Signal<string[]>
+   * it holds the total list of ID's to show.
+   * The service is responsible for updating the list, and the filtering and sorting that needs to be done.
+   * NOTE: it only holds the ID's, not the actual data.
+   * It is a computed signal, so it will update when the data changes.
+   */
   list = computed(() => {
     const prop = this.sortProp();
     const order = this.order();
@@ -34,6 +41,10 @@ export class SignalTableComponent {
     return newList;
   });
 
+  /**
+   * computedPage is a Signal<string[]>
+   * it uses computed to calculate the list of ID's put in the current page of the pagination.
+   */
   computedPage = computed(() => {
     const pageSize = this.pageSize();
     const list = this.list(); // get the list of id's to show
@@ -64,7 +75,7 @@ export class SignalTableComponent {
       }
     };
     await run('index');
-    await wait(1000); // give some room to be able to see the diff in performance monitor
+    await wait(1500); // give some room to be able to see the diff in performance monitor
     await run('id');
   };
 }

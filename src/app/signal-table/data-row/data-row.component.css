@@ -6,4 +6,5 @@ td {
   white-space: nowrap;
   text-overflow: ellipsis;
   text-align: left;
+  background-color: transparent;
 }
