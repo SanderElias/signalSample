@@ -5,10 +5,10 @@ import { SampleDataService } from 'src/app/sample-data.service';
   selector: 'table-settings',
   standalone: true,
   imports: [],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.css',
+  templateUrl: './table-settings.component.html',
+  styleUrl: './table-settings.component.css',
 })
-export class SettingsComponent {
+export class TableSettingsComponent {
   data = inject(SampleDataService);
   @Output() testPerf = new EventEmitter<void>();
 

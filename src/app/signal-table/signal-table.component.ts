@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { PersonProps, SampleDataService } from '../sample-data.service';
 import { HighLightBodyComponent } from '../table-highlight/high-light-body/high-light-body.component';
-import { DataRowComponent } from './data-row/data-row.component';
-import { SettingsComponent } from './settings/settings.component';
+import { TableSettingsComponent } from './table-settings/table-settings.component';
+import { TableRowComponent } from './table-row/table-row.component';
 import { TableFooterComponent } from './tablefooter/table-footer.component';
 import { TableHeadComponent } from './tablehead/tablehead.component';
 
 @Component({
   selector: 'signal-table',
   standalone: true,
-  imports: [ DataRowComponent, HighLightBodyComponent, SettingsComponent, TableHeadComponent, TableFooterComponent],
+  imports: [ TableRowComponent, HighLightBodyComponent, TableSettingsComponent, TableHeadComponent, TableFooterComponent],
   templateUrl: './signal-table.component.html',
   styleUrls: ['./signal-table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

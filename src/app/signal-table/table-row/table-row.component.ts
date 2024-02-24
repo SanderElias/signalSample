@@ -17,10 +17,10 @@ import { HighLightTDComponent } from 'src/app/table-highlight/high-light-td/high
     <td>{{ person()?.email ?? '--' }}</td>
     <td>{{ person()?.remark ?? '--' }}</td>
   `,
-  styleUrls: ['./data-row.component.css'],
+  styleUrls: ['./table-row.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataRowComponent {
+export class TableRowComponent {
   getById = inject(SampleDataService).getById; // get the getById method from the service.
 
   personId = input.required<string>();
