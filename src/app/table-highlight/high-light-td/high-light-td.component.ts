@@ -16,30 +16,30 @@ export class HighLightTDComponent {
   elm = inject(ElementRef).nativeElement as HTMLElement; // get the native element of this component
   fakeElm = inject(DOCUMENT).createElement('span'); // create a new span to use for the highlighted version of the content.
 
-  angularContent = viewChild.required<string, ElementRef<HTMLSpanElement>>('org', { read: ElementRef }); // get the original content of the cell.
+  originalContent = viewChild.required<string, ElementRef<HTMLSpanElement>>('org', { read: ElementRef }); // get the original content of the cell.
 
   highLight = () => {
-    const angular = this.angularContent().nativeElement;
+    const original = this.originalContent().nativeElement;
     const fake = this.fakeElm;
-    if (!this.highlightIsDone(angular, fake)) {
+    if (!this.highlightIsDone(original, fake)) {
       // no highlight done, so show the original content.
-      angular.hidden = false;
+      original.hidden = false;
       fake.innerHTML = ''; // and clear the fake content.
     }
   };
 
-  highlightIsDone = (angularContent: HTMLSpanElement, fakeContent: HTMLSpanElement) => {
-    const angularText = angularContent.innerHTML;
-    if (!angularText || angularText.trim() === '' || angularText.trim() === '--') return false; // nothing in the source that can be highlighted
+  highlightIsDone = (originalContent: HTMLSpanElement, fakeContent: HTMLSpanElement) => {
+    const originalText = originalContent.innerHTML;
+    if (!originalText || originalText.trim() === '' || originalText.trim() === '--') return false; // nothing in the source that can be highlighted
     const highLight = this.tbody?.highLight();
     if (!highLight) return false; // if there is nothing to highlight, we are done too
     const hl = new RegExp(highLight, 'gi');
-    if (!hl.test(angularText)) return false; // the filter is not in this cell, done!
-    const newHtml = angularText.replace(hl, (match) => `<mark>${match}</mark>`); // create the new content using the HTML <mark> to do the highlighting
+    if (!hl.test(originalText)) return false; // the filter is not in this cell, done!
+    const newHtml = originalText.replace(hl, (match) => `<mark>${match}</mark>`); // create the new content using the HTML <mark> to do the highlighting
     if (newHtml !== fakeContent.innerHTML) {
       // only rewrite the dom when there is a change. DOM writes are way more expensive as a test
       fakeContent.innerHTML = newHtml; // inject the version with the markers in there.
-      angularContent.hidden = true; // hide the Angular version
+      originalContent.hidden = true; // hide the Angular version
     }
     return true; // done!
   };
