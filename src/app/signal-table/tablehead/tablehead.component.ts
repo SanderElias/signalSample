@@ -1,4 +1,4 @@
-import { Component, Directive, model } from '@angular/core';
+import { Component, model } from '@angular/core';
 import type { PersonProps } from 'src/app/sample-data.service';
 import { PropNameComponent } from './prop-name.component';
 
@@ -22,7 +22,6 @@ import { PropNameComponent } from './prop-name.component';
 export class TableHeadComponent {
   sortProp = model.required<string | undefined>();
   order = model.required<number>();
-
 
   // orderBy sets the property to sort by and flips the order if it's the same property.
   orderBy = (prop: PersonProps) => {

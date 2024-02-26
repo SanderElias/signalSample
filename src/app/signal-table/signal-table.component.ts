@@ -20,7 +20,7 @@ export class SignalTableComponent {
 
   pageSize = signal(20); // the number of rows to show per page.
   sortProp = signal<PersonProps | undefined>(undefined); // hold the property to sort on. undefined means natural order.
-  order = signal<1 | -1>(1); // when sorting, this defines the sorting order
+  order = signal<1 | -1>(1); // when sorting, this defines the sorting order (1 = ascending, -1 = descending)
   filter = signal(''); // the filter to use, empty means none.
   currentPage = signal(0); // the current page to show.
   trackToUse = signal<'index' | 'id'>('index');
@@ -30,7 +30,7 @@ export class SignalTableComponent {
    * it holds the total list of ID's to show.
    * The service is responsible for updating the list, and the filtering and sorting that needs to be done.
    * NOTE: it only holds the ID's, not the actual data.
-   * It is a computed signal, so it will update when the data changes.
+   * It is a computed signal, so it will update when the data or any of the relevant properties change.
    */
   list = computed(() => {
     const prop = this.sortProp();
@@ -55,7 +55,6 @@ export class SignalTableComponent {
     for (let i = 0; i < pageSize; i += 1) {
       result.push(list[first + i]); // will push undefined in non-existing rows.
     }
-    // console.log({ pageSize, currentPage, first, length: Math.floor(list.length / pageSize), result });
     return result;
   });
 
@@ -72,7 +71,7 @@ export class SignalTableComponent {
       await wait(100); //wait till "stable"
       for (let i = 0; i < testPages; i += 1) {
         this.currentPage.set(i);
-        await wait(5);
+        await wait(1); // wait until the page is rendered.
       }
       const end = performance.now();
       console.log(`Test ${type} took ${end - start} ms`);

@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, computed, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { SampleDataService } from 'src/app/sample-data.service';
 import { HighLightTDComponent } from 'src/app/table-highlight/high-light-td/high-light-td.component';
-
 
 @Component({
   selector: 'tr [personId]',
@@ -32,5 +31,4 @@ export class TableRowComponent {
    * this will be a bit more complicated.
    */
   person = computed(() => this.getById(this.personId())());
-
 }
