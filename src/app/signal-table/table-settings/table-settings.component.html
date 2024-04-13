@@ -33,7 +33,7 @@
   Add {{ addNumber() * 1000 }} new rows
 </button>
 <button (click)="trackToUse.set(trackToUse() === 'id' ? 'index' : 'id')">Using track by {{ trackToUse() }}</button>
-<button (click)="testPerf.next()">Test Run</button>
+<button (click)="testPerf.emit()">Test Run</button>
 <label>
   <span>Filter:</span>
   <input

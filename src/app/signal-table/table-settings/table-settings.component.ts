@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, computed, inject, model, signal } from '@angular/core';
+import { Component, computed, inject, model, output, signal } from '@angular/core';
 import { SampleDataService } from 'src/app/sample-data.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { SampleDataService } from 'src/app/sample-data.service';
 })
 export class TableSettingsComponent {
   data = inject(SampleDataService);
-  @Output() testPerf = new EventEmitter<void>();
+  testPerf = output<void>()
 
   pageSize = model.required<number>(); // the number of rows to show per page.
   trackToUse = model.required<'index' | 'id'>(); // are we tracking by index or id?

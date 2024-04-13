@@ -1,4 +1,4 @@
-import { ApplicationRef, ChangeDetectorRef, Component, NgZone, inject, ɵNoopNgZone } from '@angular/core';
+import { ApplicationRef, Component, NgZone, inject, ɵNoopNgZone } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
