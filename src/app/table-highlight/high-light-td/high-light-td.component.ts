@@ -1,17 +1,16 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, NgZone, afterRender, inject, viewChild } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, Component, ElementRef, afterRender, inject, viewChild } from '@angular/core';
 import { HighLightBodyComponent } from '../high-light-body/high-light-body.component';
 
 @Component({
   selector: 'td',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `<span #org><ng-content></ng-content></span>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HighLightTDComponent {
   /** injections  */
-  zone = inject(NgZone); // use the zone to run the highlight function outside of Angular
   tbody = inject(HighLightBodyComponent, { optional: true, skipSelf: true }); // get the tbody, so we can get the highlight signal.
   elm = inject(ElementRef).nativeElement as HTMLElement; // get the native element of this component
   fakeElm = inject(DOCUMENT).createElement('span'); // create a new span to use for the highlighted version of the content.
@@ -48,9 +47,8 @@ export class HighLightTDComponent {
     if (!this.tbody) {
       throw new Error(`[HighLightTDComponent] could not find the required parent \`<tbody [highLight]="someSignal<string>"\``);
     }
-    this.zone.runOutsideAngular(() => {
-      this.elm.appendChild(this.fakeElm); // add the empty span, so its ready to go.
-      afterRender(this.highLight); // run the highlight function after the render cycle.
-    });
+
+    this.elm.appendChild(this.fakeElm); // add the empty span, so its ready to go.
+    afterRender({ read: this.highLight }); // run the highlight function after the render cycle.
   }
 }

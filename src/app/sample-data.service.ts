@@ -10,12 +10,21 @@ export class SampleDataService {
   #db = signal(new Map<string, Person>());
 
   constructor() {
-    this.addFakes(25);
+    this.addFakes(150);
   }
 
   totalCount = computed(() => this.#db().size);
 
   getById = (id?: string) => computed(() => (id ? this.#db().get(id) : undefined));
+
+  delById = (id: string) => {
+    if (id) {
+      const db = this.#db();
+      db.delete(id);
+      this.#db.set(new Map()); // make signal dirty, so everything will update. (fix for missing `signal.mutate`)
+      this.#db.set(db); // store original map back in ;-P
+    }
+  };
 
   getIdList = (sortProp?: PersonProps, factor = 1, filter = '') =>
     computed(() => {

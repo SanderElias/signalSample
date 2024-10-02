@@ -8,6 +8,7 @@ import { PropNameComponent } from './prop-name.component';
   imports: [PropNameComponent],
   template: `
     <tr>
+      <th></th>
       <th propName="id">id</th>
       <th propName="screenName">Screen name</th>
       <th propName="firstName">First name</th>

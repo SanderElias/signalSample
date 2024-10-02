@@ -8,6 +8,7 @@ import { HighLightTDComponent } from 'src/app/table-highlight/high-light-td/high
   standalone: true,
   imports: [CommonModule, HighLightTDComponent],
   template: `
+    <td><button (click)="del(personId())">X</button></td>
     <td>{{ person()?.id ?? '--' }}</td>
     <td>{{ person()?.screenName ?? '--' }}</td>
     <td>{{ person()?.firstName ?? '--' }}</td>
@@ -21,6 +22,13 @@ import { HighLightTDComponent } from 'src/app/table-highlight/high-light-td/high
 })
 export class TableRowComponent {
   getById = inject(SampleDataService).getById; // get the getById method from the service.
+
+  delbyId = inject(SampleDataService).delById
+
+  del = (id: string) => {
+    console.log('delete', id);
+    this.delbyId(id);
+  }
 
   personId = input.required<string>();
 
