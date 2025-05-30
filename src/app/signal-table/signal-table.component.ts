@@ -5,20 +5,21 @@ import { TableRowComponent } from './table-row/table-row.component';
 import { TableSettingsComponent } from './table-settings/table-settings.component';
 import { TableFooterComponent } from './tablefooter/table-footer.component';
 import { TableHeadComponent } from './tablehead/tablehead.component';
+import { injectRateLimit } from './rateLimit';
 
 @Component({
-  selector: 'signal-table',
-  standalone: true,
-  imports: [TableRowComponent, HighLightBodyComponent, TableSettingsComponent, TableHeadComponent, TableFooterComponent],
-  templateUrl: './signal-table.component.html',
-  styleUrls: ['./signal-table.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'signal-table',
+    imports: [TableRowComponent, HighLightBodyComponent, TableSettingsComponent, TableHeadComponent, TableFooterComponent],
+    templateUrl: './signal-table.component.html',
+    styleUrls: ['./signal-table.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignalTableComponent {
   /** injections */
   data = inject(SampleDataService);
+  rate = injectRateLimit(); // limit the amount of updates
 
-  pageSize = signal(32); // the number of rows to show per page.
+  pageSize = signal(100); // the number of rows to show per page.
   sortProp = signal<PersonProps | undefined>(undefined); // hold the property to sort on. undefined means natural order.
   order = signal<1 | -1>(1); // when sorting, this defines the sorting order (1 = ascending, -1 = descending)
   filter = signal(''); // the filter to use, empty means none.
@@ -50,7 +51,7 @@ export class SignalTableComponent {
     const list = this.list(); // get the list of id's to show
     const currentPage = this.currentPage() * pageSize > list.length ? Math.floor(list.length / pageSize) : this.currentPage();
     const first = currentPage * pageSize; // calculate the first item to show.
-    const result = [] as string[];
+    const result: string[] = [] ;
 
     for (let i = 0; i < pageSize; i += 1) {
       result.push(list[first + i]); // will push undefined in non-existing rows.

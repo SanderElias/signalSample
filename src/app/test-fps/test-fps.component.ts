@@ -1,14 +1,13 @@
 import { Component, afterNextRender, signal } from '@angular/core';
 
 @Component({
-  selector: 'app-test-fps',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'app-test-fps',
+    imports: [],
+    template: `
     <h1>FPS test</h1>
     <p>{{ counter() }}</p>
   `,
-  styleUrl: './test-fps.component.css',
+    styleUrl: './test-fps.component.css'
 })
 export class TestFPSComponent {
 

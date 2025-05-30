@@ -2,11 +2,10 @@ import { Component, computed, inject, model, output, signal } from '@angular/cor
 import { SampleDataService } from 'src/app/sample-data.service';
 
 @Component({
-  selector: 'table-settings',
-  standalone: true,
-  imports: [],
-  templateUrl: './table-settings.component.html',
-  styleUrl: './table-settings.component.css',
+    selector: 'table-settings',
+    imports: [],
+    templateUrl: './table-settings.component.html',
+    styleUrl: './table-settings.component.css'
 })
 export class TableSettingsComponent {
   data = inject(SampleDataService);

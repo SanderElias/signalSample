@@ -3,11 +3,10 @@ import { ChangeDetectionStrategy, Component, ElementRef, afterRender, inject, vi
 import { HighLightBodyComponent } from '../high-light-body/high-light-body.component';
 
 @Component({
-  selector: 'td',
-  standalone: true,
-  imports: [],
-  template: `<span #org><ng-content></ng-content></span>`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'td',
+    imports: [],
+    template: `<span #org><ng-content></ng-content></span>`,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HighLightTDComponent {
   /** injections  */
