@@ -4,11 +4,10 @@ import { injectDomRepeatOnHold } from 'src/app/injectDomRepeatOnHold';
 import { SampleDataService } from 'src/app/sample-data.service';
 
 @Component({
-  selector: 'tfoot',
-  standalone: true,
-  imports: [DecimalPipe],
-  templateUrl: './table-footer.component.html',
-  styleUrl: './table-footer.component.css',
+    selector: 'tfoot',
+    imports: [DecimalPipe],
+    templateUrl: './table-footer.component.html',
+    styleUrl: './table-footer.component.css'
 })
 export class TableFooterComponent {
   data = inject(SampleDataService);

@@ -7,12 +7,11 @@ import { TableFooterComponent } from './tablefooter/table-footer.component';
 import { TableHeadComponent } from './tablehead/tablehead.component';
 
 @Component({
-  selector: 'signal-table',
-  standalone: true,
-  imports: [TableRowComponent, HighLightBodyComponent, TableSettingsComponent, TableHeadComponent, TableFooterComponent],
-  templateUrl: './signal-table.component.html',
-  styleUrls: ['./signal-table.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'signal-table',
+    imports: [TableRowComponent, HighLightBodyComponent, TableSettingsComponent, TableHeadComponent, TableFooterComponent],
+    templateUrl: './signal-table.component.html',
+    styleUrls: ['./signal-table.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignalTableComponent {
   /** injections */
