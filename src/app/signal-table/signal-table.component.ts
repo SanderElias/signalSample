@@ -17,7 +17,7 @@ export class SignalTableComponent {
   /** injections */
   data = inject(SampleDataService);
 
-  pageSize = signal(32); // the number of rows to show per page.
+  pageSize = signal(19); // the number of rows to show per page.
   sortProp = signal<PersonProps | undefined>(undefined); // hold the property to sort on. undefined means natural order.
   order = signal<1 | -1>(1); // when sorting, this defines the sorting order (1 = ascending, -1 = descending)
   filter = signal(''); // the filter to use, empty means none.

@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { SampleDataService } from 'src/app/sample-data.service';
 import { HighLightTDComponent } from 'src/app/table-highlight/high-light-td/high-light-td.component';
 
 @Component({
     selector: 'tr [personId]',
-    imports: [CommonModule, HighLightTDComponent],
+    imports: [HighLightTDComponent],
     template: `
     <td><button (click)="del(personId())">X</button></td>
     <td>{{ person()?.id ?? '--' }}</td>
