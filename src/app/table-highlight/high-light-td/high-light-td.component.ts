@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, afterRender, inject, viewChild } from '@angular/core';
+
+import { ChangeDetectionStrategy, Component, ElementRef, inject, viewChild, DOCUMENT, afterEveryRender } from '@angular/core';
 import { HighLightBodyComponent } from '../high-light-body/high-light-body.component';
 
 @Component({
@@ -48,6 +48,6 @@ export class HighLightTDComponent {
     }
 
     this.elm.appendChild(this.fakeElm); // add the empty span, so its ready to go.
-    afterRender({ read: this.highLight }); // run the highlight function after the render cycle.
+    afterEveryRender({ read: this.highLight }); // run the highlight function after the render cycle.
   }
 }
