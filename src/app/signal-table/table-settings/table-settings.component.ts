@@ -2,14 +2,14 @@ import { Component, computed, inject, model, output, signal } from '@angular/cor
 import { SampleDataService } from 'src/app/sample-data.service';
 
 @Component({
-    selector: 'table-settings',
-    imports: [],
-    templateUrl: './table-settings.component.html',
-    styleUrl: './table-settings.component.css'
+  selector: 'table-settings',
+  imports: [],
+  templateUrl: './table-settings.component.html',
+  styleUrl: './table-settings.component.css',
 })
 export class TableSettingsComponent {
   data = inject(SampleDataService);
-  testPerf = output<void>()
+  testPerf = output<void>();
 
   pageSize = model.required<number>(); // the number of rows to show per page.
   trackToUse = model.required<'index' | 'id'>(); // are we tracking by index or id?
@@ -19,7 +19,7 @@ export class TableSettingsComponent {
   slowAdd = signal(false); // if true, the add button will add a 500ms call between every page of 1000.
   delay = computed(() => (this.slowAdd() ? 500 : 0)); // the delay between adding a page of 1000.
 
-  busy = signal(false);  // if true, the add button is disabled.
+  busy = signal(false); // if true, the add button is disabled.
   addRows = async (n: number) => {
     if (this.busy()) return;
     this.busy.set(true);

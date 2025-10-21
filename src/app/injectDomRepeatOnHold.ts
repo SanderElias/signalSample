@@ -1,5 +1,5 @@
 import { DestroyRef, ElementRef, inject } from '@angular/core';
-import { Subject, fromEvent, map, mapTo, merge, race, repeat, switchMap, takeUntil, tap, timer } from 'rxjs';
+import { fromEvent, race, repeat, switchMap, takeUntil, tap, timer } from 'rxjs';
 
 type SideEffect = (n: number) => void;
 
@@ -39,10 +39,12 @@ export function injectDomRepeatOnHold(
         if (!elm) {
           throw new Error(`injectDomRepeatOnHold: could not find element with selector ${elmSelector}`);
         }
-        return fromEvent<MouseEvent>(elm, 'mousedown').pipe( // start on mouse down
+        return fromEvent<MouseEvent>(elm, 'mousedown').pipe(
+          // start on mouse down
           tap(() => (elm.style.cursor = 'progress')), // show the user that something is happening.
           switchMap(() =>
-            timer(100, delay).pipe( // start a timer that will call the side-effect function repeatedly.
+            timer(100, delay).pipe(
+              // start a timer that will call the side-effect function repeatedly.
               takeUntil(race(fromEvent<MouseEvent>(elm, 'mouseup'), fromEvent<MouseEvent>(elm, 'mouseleave'))), // stop when the mouse button is released.
               tap({
                 next: (n) => sideEffect(n), // call the side-effect function.
@@ -58,7 +60,7 @@ export function injectDomRepeatOnHold(
           ),
           repeat() // restart so it works on next click too.
         );
-      }),
+      })
     )
     .subscribe(); // start listening for mouse down events.
 

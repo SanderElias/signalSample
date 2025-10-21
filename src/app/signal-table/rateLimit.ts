@@ -1,7 +1,4 @@
-import {
-  ChangeDetectorRef, Injector,
-  afterNextRender, inject
-} from '@angular/core';
+import { ChangeDetectorRef, Injector, afterNextRender, inject } from '@angular/core';
 
 export const injectRateLimit = (n = 16) => {
   const injector = inject(Injector);

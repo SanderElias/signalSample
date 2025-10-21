@@ -3,9 +3,9 @@ import type { PersonProps } from 'src/app/sample-data.service';
 import { PropNameComponent } from './prop-name.component';
 
 @Component({
-    selector: 'thead',
-    imports: [PropNameComponent],
-    template: `
+  selector: 'thead',
+  imports: [PropNameComponent],
+  template: `
     <tr>
       <th></th>
       <th propName="id">id</th>
@@ -17,7 +17,7 @@ import { PropNameComponent } from './prop-name.component';
       <th propName="remark">Remark</th>
     </tr>
   `,
-    styleUrl: './tablehead.component.css'
+  styleUrl: './tablehead.component.css',
 })
 export class TableHeadComponent {
   sortProp = model.required<string | undefined>();

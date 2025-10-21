@@ -1,12 +1,11 @@
-
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { SampleDataService } from 'src/app/sample-data.service';
 import { HighLightTDComponent } from 'src/app/table-highlight/high-light-td/high-light-td.component';
 
 @Component({
-    selector: 'tr [personId]',
-    imports: [HighLightTDComponent],
-    template: `
+  selector: 'tr [personId]',
+  imports: [HighLightTDComponent],
+  template: `
     <td><button (click)="del(personId())">X</button></td>
     <td>{{ person()?.id ?? '--' }}</td>
     <td>{{ person()?.screenName ?? '--' }}</td>
@@ -16,18 +15,18 @@ import { HighLightTDComponent } from 'src/app/table-highlight/high-light-td/high
     <td>{{ person()?.email ?? '--' }}</td>
     <td>{{ person()?.remark ?? '--' }}</td>
   `,
-    styleUrls: ['./table-row.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./table-row.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableRowComponent {
   getById = inject(SampleDataService).getById; // get the getById method from the service.
 
-  delbyId = inject(SampleDataService).delById
+  delbyId = inject(SampleDataService).delById;
 
   del = (id: string) => {
     console.log('delete', id);
     this.delbyId(id);
-  }
+  };
 
   personId = input.required<string>();
 

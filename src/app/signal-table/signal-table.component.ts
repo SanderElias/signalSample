@@ -8,11 +8,11 @@ import { TableHeadComponent } from './tablehead/tablehead.component';
 import { injectRateLimit } from './rateLimit';
 
 @Component({
-    selector: 'signal-table',
-    imports: [TableRowComponent, HighLightBodyComponent, TableSettingsComponent, TableHeadComponent, TableFooterComponent],
-    templateUrl: './signal-table.component.html',
-    styleUrls: ['./signal-table.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'signal-table',
+  imports: [TableRowComponent, HighLightBodyComponent, TableSettingsComponent, TableHeadComponent, TableFooterComponent],
+  templateUrl: './signal-table.component.html',
+  styleUrls: ['./signal-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignalTableComponent {
   /** injections */
@@ -51,7 +51,7 @@ export class SignalTableComponent {
     const list = this.list(); // get the list of id's to show
     const currentPage = this.currentPage() * pageSize > list.length ? Math.floor(list.length / pageSize) : this.currentPage();
     const first = currentPage * pageSize; // calculate the first item to show.
-    const result: string[] = [] ;
+    const result: string[] = [];
 
     for (let i = 0; i < pageSize; i += 1) {
       result.push(list[first + i]); // will push undefined in non-existing rows.

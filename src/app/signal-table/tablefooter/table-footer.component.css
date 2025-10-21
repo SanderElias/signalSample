@@ -6,7 +6,8 @@ tr > td[colspan] > div {
   padding: 0.5rem;
 }
 
-td, td:hover {
+td,
+td:hover {
   background-color: var(--surface-1);
 }
 
