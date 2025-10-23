@@ -1,9 +1,11 @@
 import { Component, model } from '@angular/core';
+import { inject } from '@angular/core';
 import type { PersonProps } from 'src/app/sample-data.service';
+import { SignalTable } from '../signal-table.service';
 import { PropNameComponent } from './prop-name.component';
 
 @Component({
-  selector: 'thead',
+  selector: 'thead [sortProp]',
   imports: [PropNameComponent],
   template: `
     <tr>
@@ -20,8 +22,9 @@ import { PropNameComponent } from './prop-name.component';
   styleUrl: './tablehead.component.css',
 })
 export class TableHeadComponent {
-  sortProp = model.required<string | undefined>();
-  order = model.required<number>();
+  signalTable = inject(SignalTable);
+  sortProp = this.signalTable.sortProp;
+  order = this.signalTable.order;
 
   // orderBy sets the property to sort by and flips the order if it's the same property.
   orderBy = (prop: PersonProps) => {
@@ -32,7 +35,7 @@ export class TableHeadComponent {
     } else {
       // set order back to ascending.
       this.order.set(1);
+      this.sortProp.set(prop);
     }
-    this.sortProp.set(prop);
   };
 }

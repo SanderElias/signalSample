@@ -1,40 +1,38 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { SampleDataService } from 'src/app/sample-data.service';
 import { HighLightTDComponent } from 'src/app/table-highlight/high-light-td/high-light-td.component';
+import type { Person } from '../../utils';
 
 @Component({
   selector: 'tr [personId]',
   imports: [HighLightTDComponent],
   template: `
-    <td><button (click)="del(personId())">X</button></td>
-    <td>{{ person()?.id ?? '--' }}</td>
-    <td>{{ person()?.screenName ?? '--' }}</td>
-    <td>{{ person()?.firstName ?? '--' }}</td>
-    <td>{{ person()?.lastName ?? '--' }}</td>
-    <td>{{ person()?.phone ?? '--' }}</td>
-    <td>{{ person()?.email ?? '--' }}</td>
-    <td>{{ person()?.remark ?? '--' }}</td>
+    <td><button (click)="del(personId())">🗑️</button></td>
+    <td>{{ readProp('id') }}</td>
+    <td>{{ readProp('screenName') }}</td>
+    <td>{{ readProp('firstName') }}</td>
+    <td>{{ readProp('lastName') }}</td>
+    <td>{{ readProp('phone') }}</td>
+    <td>{{ readProp('email') }}</td>
+    <td>{{ readProp('remark') }}</td>
   `,
   styleUrls: ['./table-row.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableRowComponent {
-  getById = inject(SampleDataService).getById; // get the getById method from the service.
-
-  delbyId = inject(SampleDataService).delById;
-
-  del = (id: string) => {
-    console.log('delete', id);
-    this.delbyId(id);
-  };
-
+  data = inject(SampleDataService); // inject once
   personId = input.required<string>();
 
-  /**
-   * use the personId signal to get the person.
-   * this wil update the UI when the personId changes.
-   * When the service returns an observable instead of a signal,
-   * this will be a bit more complicated.
-   */
-  person = computed(() => this.getById(this.personId())());
+  personRef = this.data.getById(this.personId);
+
+  readProp = (prop: keyof Person) => {
+    if (this.personRef.isLoading()) return '';
+    return this.personRef.value()[prop] ?? '--';
+  };
+
+  /** delete the person by id */
+  del = (id: string) => {
+    console.log('delete', id);
+    this.data.delById(id);
+  };
 }

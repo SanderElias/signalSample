@@ -1,21 +1,21 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, computed, inject, input, model } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { injectDomRepeatOnHold } from 'src/app/injectDomRepeatOnHold';
-import { SampleDataService } from 'src/app/sample-data.service';
+import { SignalTable } from '../signal-table.service';
 
 @Component({
-  selector: 'tfoot',
+  selector: 'tfoot [pagination]',
   imports: [DecimalPipe],
   templateUrl: './table-footer.component.html',
   styleUrl: './table-footer.component.css',
 })
 export class TableFooterComponent {
-  data = inject(SampleDataService);
-
-  currentPage = model.required<number>();
-  pageSize = input.required<number>();
-  list = input.required<string[]>();
-  filter = input.required<string>();
+  signalTable = inject(SignalTable) as SignalTable;
+  currentPage = this.signalTable.currentPage;
+  pageSize = this.signalTable.pageSize;
+  list = this.signalTable.list;
+  filter = this.signalTable.filter;
+  totalCount = this.signalTable.totalCount;
 
   /** calculate the number of pages */
   pageCount = computed(() => Math.ceil(this.list().length / this.pageSize())); // calculate the number of pages.

@@ -18,7 +18,7 @@
         title="hold down for automatic paging">
         Next Page
       </button>
-      <span>Available rows:{{ data.totalCount() | number }}</span>
+      <span>Available rows:{{ totalCount() | number }}</span>
       @if (filter()) {
         <span>In filter:{{ list().length | number }}</span>
       }
