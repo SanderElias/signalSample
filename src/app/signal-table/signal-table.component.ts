@@ -1,77 +1,68 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { PersonProps, SampleDataService } from '../sample-data.service';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { HighLightBodyComponent } from '../table-highlight/high-light-body/high-light-body.component';
+import { SignalTable } from './signal-table.service';
 import { TableRowComponent } from './table-row/table-row.component';
 import { TableSettingsComponent } from './table-settings/table-settings.component';
 import { TableFooterComponent } from './tablefooter/table-footer.component';
 import { TableHeadComponent } from './tablehead/tablehead.component';
-import { injectRateLimit } from './rateLimit';
 
 @Component({
   selector: 'signal-table',
   imports: [TableRowComponent, HighLightBodyComponent, TableSettingsComponent, TableHeadComponent, TableFooterComponent],
-  templateUrl: './signal-table.component.html',
+  template: `
+    <table-settings
+      (testPerf)="testPerf()"
+      [(trackToUse)]="trackToUse" />
+
+    <table>
+      <thead sortProp></thead>
+
+      <tbody [highLight]="filter()">
+        @if (trackToUse() === 'index') {
+          @for (id of computedPage(); track $index) {
+            <tr [personId]="id"></tr>
+          }
+        }
+        @if (trackToUse() === 'id') {
+          @for (id of computedPage(); track id) {
+            <tr [personId]="id"></tr>
+          }
+        }
+      </tbody>
+
+      <tfoot pagination></tfoot>
+    </table>
+  `,
   styleUrls: ['./signal-table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SignalTable],
 })
 export class SignalTableComponent {
-  /** injections */
-  data = inject(SampleDataService);
-  rate = injectRateLimit(); // limit the amount of updates
+  /** Use SignalTable service for all table state and computed signals */
+  signalTable = inject(SignalTable) as SignalTable;
+  // rate = injectRateLimit(); // limit the amount of updates (not needed anymore, as between NG15 and NG20 the signal system has been optimized a lot)
 
-  pageSize = signal(19); // the number of rows to show per page.
-  sortProp = signal<PersonProps | undefined>(undefined); // hold the property to sort on. undefined means natural order.
-  order = signal<1 | -1>(1); // when sorting, this defines the sorting order (1 = ascending, -1 = descending)
-  filter = signal(''); // the filter to use, empty means none.
-  currentPage = signal(0); // the current page to show.
-  trackToUse = signal<'index' | 'id'>('index');
+  // Expose service signals for template binding
+  filter = this.signalTable.filter; // I only need this here for the highLight stuff
 
-  /**
-   * list is a Signal<string[]>
-   * it holds the total list of ID's to show.
-   * The service is responsible for updating the list, and the filtering and sorting that needs to be done.
-   * NOTE: it only holds the ID's, not the actual data.
-   * It is a computed signal, so it will update when the data or any of the relevant properties change.
-   */
-  list = computed(() => {
-    const prop = this.sortProp();
-    const order = this.order();
-    const filter = this.filter();
-    this.data.totalCount(); // make sure the list updates when new data arrives.
-    const newList = this.data.getIdList(prop, order, filter)();
-    return newList;
-  });
-
-  /**
-   * computedPage is a Signal<string[]>
-   * it uses computed to calculate the list of ID's put in the current page of the pagination.
-   */
-  computedPage = computed(() => {
-    const pageSize = this.pageSize();
-    const list = this.list(); // get the list of id's to show
-    const currentPage = this.currentPage() * pageSize > list.length ? Math.floor(list.length / pageSize) : this.currentPage();
-    const first = currentPage * pageSize; // calculate the first item to show.
-    const result: string[] = [];
-
-    for (let i = 0; i < pageSize; i += 1) {
-      result.push(list[first + i]); // will push undefined in non-existing rows.
-    }
-    return result;
-  });
+  // a list of ID's to show in the current page
+  computedPage = this.signalTable.computedPage;
 
   /**
    * automated test run, so I can monitor performance impact
+   * this is pure test/demo code, in a production app you would not have this.
    */
+  trackToUse = signal<'index' | 'id'>('index');
   testPerf = async () => {
     const testPages = 500;
     const wait = (to = 10) => new Promise((r: Function) => setTimeout(r, to));
     const run = async (type: 'id' | 'index') => {
       const start = performance.now();
       this.trackToUse.set(type);
-      this.currentPage.set(0);
+      this.signalTable.currentPage.set(0);
       await wait(100); //wait till "stable"
       for (let i = 0; i < testPages; i += 1) {
-        this.currentPage.set(i);
+        this.signalTable.currentPage.set(i);
         await wait(1); // wait until the page is rendered.
       }
       const end = performance.now();

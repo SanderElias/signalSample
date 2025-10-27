@@ -1,5 +1,6 @@
 import { Component, computed, inject, model, output, signal } from '@angular/core';
 import { SampleDataService } from 'src/app/sample-data.service';
+import { SignalTable } from '../signal-table.service';
 
 @Component({
   selector: 'table-settings',
@@ -9,11 +10,12 @@ import { SampleDataService } from 'src/app/sample-data.service';
 })
 export class TableSettingsComponent {
   data = inject(SampleDataService);
+  signalTable = inject(SignalTable) as SignalTable;
   testPerf = output<void>();
-
-  pageSize = model.required<number>(); // the number of rows to show per page.
   trackToUse = model.required<'index' | 'id'>(); // are we tracking by index or id?
-  filter = model.required<string>(); // the filter to use, empty means none.
+
+  pageSize = this.signalTable.pageSize; // the number of rows to show per page.
+  filter = this.signalTable.filter; // the filter to use, empty means none.
 
   addNumber = signal(25); // the number of additions used by the add button.
   slowAdd = signal(false); // if true, the add button will add a 500ms call between every page of 1000.

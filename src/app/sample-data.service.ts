@@ -1,4 +1,4 @@
-import { Injectable, computed, effect, signal } from '@angular/core';
+import { Injectable, computed, resource, signal, type Signal } from '@angular/core';
 import { Person } from './utils';
 
 export type PersonProps = keyof Person;
@@ -7,22 +7,36 @@ export type PersonProps = keyof Person;
   providedIn: 'root',
 })
 export class SampleDataService {
-  #db = signal(new Map<string, Person>());
+  // private in-memory "database" use equal: () => false to force updates on every change.
+  #db = signal(new Map<string, Person>(), { equal: () => false });
 
   constructor() {
     this.addFakes(150);
   }
 
+  // in a real app, this data would come from a server.
   totalCount = computed(() => this.#db().size);
 
-  getById = (id?: string) => computed(() => (id ? this.#db().get(id) : undefined));
+  // this would extract the data from the the pages of data from the server. (or fetch it row by row, depends...)
+  getById = (id: Signal<string | undefined>) =>
+    resource({
+      params: id,
+      loader: async ({ params }) => {
+        // in a real app, this would fetch the data from the server.
+        await new Promise((resolve) => setTimeout(resolve, Math.random() * 25)); // simulate some delay
+        if (this.#db().has(params ?? '')) {
+          return this.#db().get(params!)!;
+        }
+        return {} as Person;
+      },
+      defaultValue: {} as Person,
+    });
 
   delById = (id: string) => {
     if (id) {
       const db = this.#db();
       db.delete(id);
-      this.#db.set(new Map()); // make signal dirty, so everything will update. (fix for missing `signal.mutate`)
-      this.#db.set(db); // store original map back in ;-P
+      this.#db.set(db); //update the signal
     }
   };
 
@@ -59,8 +73,7 @@ export class SampleDataService {
       const persons = await genFakes(1000);
       const db = this.#db();
       persons.forEach((person) => db.set(person.id, person));
-      this.#db.set(new Map()); // make signal dirty, so everything will update. (fix for missing `signal.mutate`)
-      this.#db.set(db); // store original map back in ;-P
+      this.#db.set(db); // update the signal
       // give the browser some time to work on the UI;
       await new Promise((resolve) => setTimeout(resolve, Math.random() * 25 + 25));
     }
