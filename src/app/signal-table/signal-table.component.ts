@@ -39,7 +39,7 @@ import { TableHeadComponent } from './tablehead/tablehead.component';
 })
 export class SignalTableComponent {
   /** Use SignalTable service for all table state and computed signals */
-  signalTable = inject(SignalTable) as SignalTable;
+  signalTable = inject(SignalTable);
   // rate = injectRateLimit(); // limit the amount of updates (not needed anymore, as between NG15 and NG20 the signal system has been optimized a lot)
 
   // Expose service signals for template binding

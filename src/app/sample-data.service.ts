@@ -1,4 +1,4 @@
-import { Injectable, computed, resource, signal, type Signal } from '@angular/core';
+import { Injectable, computed, resource, signal, type OnInit, type Signal } from '@angular/core';
 import { Person } from './utils';
 
 export type PersonProps = keyof Person;
@@ -6,7 +6,7 @@ export type PersonProps = keyof Person;
 @Injectable({
   providedIn: 'root',
 })
-export class SampleDataService {
+export class SampleDataService  {
   // private in-memory "database" use equal: () => false to force updates on every change.
   #db = signal(new Map<string, Person>(), { equal: () => false });
 
@@ -23,7 +23,7 @@ export class SampleDataService {
       params: id,
       loader: async ({ params }) => {
         // in a real app, this would fetch the data from the server.
-        await new Promise((resolve) => setTimeout(resolve, Math.random() * 25)); // simulate some delay
+        await new Promise((resolve) => setTimeout(resolve, Math.random() * 40)); // simulate some delay
         if (this.#db().has(params ?? '')) {
           return this.#db().get(params!)!;
         }
@@ -79,3 +79,4 @@ export class SampleDataService {
     }
   }
 }
+
